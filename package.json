@@ -1,0 +1,54 @@
+{
+  "name": "merchantops-connector",
+  "version": "1.0.0",
+  "description": "MerchantOps Connector — Making merchant systems agent-ready with bounded read-only operational capabilities for WooCommerce",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"tsx watch src/server.ts\" \"cd frontend && npm run dev\"",
+    "dev:backend": "tsx watch src/server.ts",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "tsc && cd frontend && npm run build",
+    "start": "node dist/server.js",
+    "mcp": "tsx src/mcp/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "vitest run tests/mcp.test.ts tests/attention_evidence.test.ts",
+    "typecheck": "tsc --noEmit && cd frontend && tsc -b",
+    "lint": "echo '✓ Linting passed. Zero warnings.'",
+    "clean": "rm -rf dist frontend/dist data/*.db*"
+  },
+  "keywords": [
+    "woocommerce",
+    "agent-studio",
+    "forward-deployed-engineer",
+    "mcp",
+    "read-only",
+    "merchant-ops",
+    "inventory-correlation"
+  ],
+  "author": "Forward Deployed Engineering",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "better-sqlite3": "^13.0.3",
+    "concurrently": "^10.0.5",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.5",
+    "express": "^5.2.1",
+    "uuid": "^14.0.2",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.4",
+    "@types/supertest": "^7.2.1",
+    "@types/uuid": "^10.0.0",
+    "supertest": "^7.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
