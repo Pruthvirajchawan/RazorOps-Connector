@@ -42,7 +42,12 @@ jobs:
           cd frontend && npm run lint && cd ..
 
       - name: Run Unit & Integration Test Suites
-        run: npm test -- --reporter=verbose
+        run: |
+          npx vitest run --reporter=verbose 2>&1 | tee test_results.txt || {
+            cat test_results.txt >> $GITHUB_STEP_SUMMARY
+            cat test_results.txt
+            exit 1
+          }
 
       - name: Run End-to-End Programmatic Verification
         run: npm run test:e2e
