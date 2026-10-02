@@ -13,7 +13,8 @@
     "mcp": "tsx src/mcp/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "vitest run tests/mcp.test.ts tests/attention_evidence.test.ts",
+    "test:e2e": "tsx tests/e2e_verification.ts",
+    "test:live": "tsx scripts/live_e2e_http_test.ts",
     "typecheck": "tsc --noEmit && cd frontend && tsc -b",
     "lint": "echo '✓ Linting passed. Zero warnings.'",
     "clean": "rm -rf dist frontend/dist data/*.db*"
