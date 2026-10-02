@@ -7,6 +7,8 @@ import { appDb } from './database/db.js';
 import { ConnectorError } from './domain/errors.js';
 import { ConnectionConfig, ConnectionTestSchema } from './domain/types.js';
 import { rootLogger } from './logging/logger.js';
+import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
+import { createMcpServer } from './mcp/server.js';
 import { executeMcpTool, MCP_TOOLS } from './mcp/tools.js';
 import { DemoProvider } from './providers/demo.provider.js';
 import { MerchantDataProvider } from './providers/provider.interface.js';
@@ -249,6 +251,23 @@ export function createApp(initialProvider?: MerchantDataProvider) {
       res.json({ tool, result, requestId });
     } catch (err) {
       next(err);
+    }
+  });
+
+  // 8b. Official MCP Protocol over SSE (for Agent Studio & network MCP hosts)
+  let sseTransport: SSEServerTransport | null = null;
+  app.get('/sse', async (_req: Request, res: Response) => {
+    rootLogger.info('Incoming MCP SSE connection from Agent Studio / MCP host');
+    sseTransport = new SSEServerTransport('/messages', res);
+    const mcpServer = createMcpServer(activeProvider);
+    await mcpServer.connect(sseTransport);
+  });
+
+  app.post('/messages', async (req: Request, res: Response) => {
+    if (sseTransport) {
+      await sseTransport.handlePostMessage(req, res);
+    } else {
+      res.status(400).send('No active SSE session');
     }
   });
 
