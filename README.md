@@ -2,6 +2,7 @@
 > **Making merchant systems agent-ready for Razorpay Agent Studio.**  
 > A high-reliability, strictly read-only operational gateway that correlates WooCommerce orders and warehouse inventory to prevent fulfillment bottlenecks with verifiable ground-truth evidence.
 
+[![CI Pipeline](https://github.com/Pruthvirajchawan/RazorOps-Connector/actions/workflows/ci.yml/badge.svg)](https://github.com/Pruthvirajchawan/RazorOps-Connector/actions)
 [![Vitest Tests](https://img.shields.io/badge/Vitest-40%20passed-10b981?style=for-the-badge&logo=vitest&logoColor=white)](./docs/evaluation.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20NodeNext-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](./tsconfig.json)
 [![MCP Protocol](https://img.shields.io/badge/MCP-Official%20SDK-7c3aed?style=for-the-badge)](https://modelcontextprotocol.io)

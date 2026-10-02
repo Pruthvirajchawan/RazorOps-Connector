@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Activity,
   ArrowRight,
@@ -132,18 +132,6 @@ export default function App() {
   const [attentionQueue, setAttentionQueue] = useState<AttentionItem[]>([]);
   const [isLoadingQueue, setIsLoadingQueue] = useState(false);
 
-  // Chat & Agent state
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'msg-welcome',
-      sender: 'agent',
-      text: "👋 **Welcome to MerchantOps.** I am your bounded operational intelligence assistant for WooCommerce.\n\nI can cross-correlate active orders against real-time warehouse inventory to surface fulfillment bottlenecks with verifiable ground-truth evidence.\n\n*Click one of the quick actions below to inspect live operations:*",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    },
-  ]);
-  const [inputQuery, setInputQuery] = useState('');
-  const [isThinking, setIsThinking] = useState(false);
-
   // Inspector state
   const [selectedActivities, setSelectedActivities] = useState<ActivityStep[]>([]);
   const [selectedAttentionItem, setSelectedAttentionItem] = useState<AttentionItem | null>(null);
@@ -152,7 +140,45 @@ export default function App() {
   // Audit records
   const [auditLogs, setAuditLogs] = useState<AuditRecord[]>([]);
 
+  // Chat & Agent state
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 'msg-welcome',
+      sender: 'agent',
+      text: "👋 **Welcome to MerchantOps.** I am your bounded operational intelligence assistant for WooCommerce.\n\nI can cross-correlate active orders against real-time warehouse inventory to surface fulfillment bottlenecks with verifiable ground-truth evidence.\n\n*Click one of the quick actions below to inspect live operations:*",
+      timestamp: 'Just now',
+    },
+  ]);
+  const [inputQuery, setInputQuery] = useState('');
+  const [isThinking, setIsThinking] = useState(false);
+
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const loadAttentionQueue = useCallback(async () => {
+    setIsLoadingQueue(true);
+    try {
+      const res = await fetch('/api/attention');
+      const data = await res.json();
+      setAttentionQueue(data.items || []);
+      if (data.items && data.items.length > 0) {
+        setSelectedAttentionItem((prev) => prev || data.items[0]);
+      }
+    } catch (err) {
+      console.error('Failed to load attention items', err);
+    } finally {
+      setIsLoadingQueue(false);
+    }
+  }, []);
+
+  const loadAuditLogs = useCallback(async () => {
+    try {
+      const res = await fetch('/api/audit?limit=50');
+      const data = await res.json();
+      setAuditLogs(data.logs || []);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -175,23 +201,13 @@ export default function App() {
       .catch(() => {});
 
     loadAttentionQueue();
-  }, []);
+  }, [loadAttentionQueue]);
 
-  const loadAttentionQueue = async () => {
-    setIsLoadingQueue(true);
-    try {
-      const res = await fetch('/api/attention');
-      const data = await res.json();
-      setAttentionQueue(data.items || []);
-      if (data.items && data.items.length > 0 && !selectedAttentionItem) {
-        setSelectedAttentionItem(data.items[0]);
-      }
-    } catch (err) {
-      console.error('Failed to load attention items', err);
-    } finally {
-      setIsLoadingQueue(false);
+  useEffect(() => {
+    if (activeTab === 'audit') {
+      loadAuditLogs();
     }
-  };
+  }, [activeTab, loadAuditLogs]);
 
   const handleTestConnection = async () => {
     setIsTestingConn(true);
@@ -313,22 +329,6 @@ export default function App() {
       setIsThinking(false);
     }
   };
-
-  const loadAuditLogs = async () => {
-    try {
-      const res = await fetch('/api/audit?limit=50');
-      const data = await res.json();
-      setAuditLogs(data.logs || []);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    if (activeTab === 'audit') {
-      loadAuditLogs();
-    }
-  }, [activeTab]);
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#f8fafc] text-slate-800 font-sans select-none overflow-hidden">
