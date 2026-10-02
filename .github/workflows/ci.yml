@@ -42,7 +42,7 @@ jobs:
           cd frontend && npm run lint && cd ..
 
       - name: Run Unit & Integration Test Suites
-        run: npm test
+        run: npm test -- --reporter=verbose
 
       - name: Run End-to-End Programmatic Verification
         run: npm run test:e2e

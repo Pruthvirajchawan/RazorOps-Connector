@@ -71,11 +71,11 @@ export async function validateStoreUrl(rawUrl: string, allowLocalhost = false): 
     });
   }
 
-  // Check explicit blocklist
-  if (!effectiveAllowLocalhost && DISALLOWED_HOSTNAMES.has(parsed.hostname.toLowerCase())) {
+  // Check explicit blocklist or direct private IP
+  if (!effectiveAllowLocalhost && (DISALLOWED_HOSTNAMES.has(parsed.hostname.toLowerCase()) || isPrivateIp(parsed.hostname))) {
     throw new ConnectorError({
       code: 'SSRF_DETECTED',
-      message: `Access to target host "${parsed.hostname}" is blocked by security policy.`,
+      message: `Access to target host "${parsed.hostname}" is blocked by security policy: prohibited private IP or metadata host.`,
       remedy: 'Target a valid, publicly accessible WooCommerce domain.',
     });
   }

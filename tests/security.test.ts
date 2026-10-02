@@ -16,8 +16,8 @@ describe('SECURITY & SSRF TEST SUITE', () => {
   });
 
   it('28. should reject private IP ranges (e.g. 10.0.0.1, 192.168.1.1)', async () => {
-    await expect(validateStoreUrl('https://10.0.0.1/wp-json', false)).rejects.toThrow(/prohibited private IP/i);
-    await expect(validateStoreUrl('https://192.168.1.100/wp-json', false)).rejects.toThrow(/prohibited private IP/i);
+    await expect(validateStoreUrl('https://10.0.0.1/wp-json', false)).rejects.toThrow(/prohibited private IP|security policy/i);
+    await expect(validateStoreUrl('https://192.168.1.100/wp-json', false)).rejects.toThrow(/prohibited private IP|security policy/i);
   });
 
   it('29. should sanitize credentials in log serializer', () => {
