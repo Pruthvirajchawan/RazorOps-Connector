@@ -1,11 +1,12 @@
-# RazorOps Connector
-> **Making merchant systems agent-ready.**  
-> A bounded, read-only operational gateway connecting autonomous AI agents with WooCommerce orders and inventory.
+# ⚡ RazorOps Connector
+> **Making merchant systems agent-ready for Razorpay Agent Studio.**  
+> A high-reliability, strictly read-only operational gateway that correlates WooCommerce orders and warehouse inventory to prevent fulfillment bottlenecks with verifiable ground-truth evidence.
 
-[![Tests](https://img.shields.io/badge/tests-40%20passed-emerald)](./docs/evaluation.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20NodeNext-blue)](./tsconfig.json)
-[![MCP](https://img.shields.io/badge/MCP-Official%20SDK-purple)](https://modelcontextprotocol.io)
-[![License](https://img.shields.io/badge/License-Apache%202.0-gray)](./LICENSE)
+[![Vitest Tests](https://img.shields.io/badge/Vitest-40%20passed-10b981?style=for-the-badge&logo=vitest&logoColor=white)](./docs/evaluation.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20NodeNext-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](./tsconfig.json)
+[![MCP Protocol](https://img.shields.io/badge/MCP-Official%20SDK-7c3aed?style=for-the-badge)](https://modelcontextprotocol.io)
+[![Security Guard](https://img.shields.io/badge/Security-SSRF%20Protected-0284c7?style=for-the-badge)](./docs/security.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-64748b?style=for-the-badge)](./LICENSE)
 
 ---
 
