@@ -297,6 +297,16 @@ export function createApp(initialProvider?: MerchantDataProvider) {
     res.json({ count: logs.length, logs });
   });
 
+  // 11. Dedicated JSON 404 Handler for Unrecognized /api Routes
+  app.use('/api', (req: Request, res: Response) => {
+    res.status(404).json({
+      error: 'NOT_FOUND',
+      message: `API endpoint ${req.method} ${req.originalUrl} does not exist.`,
+      statusCode: 404,
+      remedy: 'Check available endpoints at /api/health or review the MCP tool specification at /api/mcp/tools.',
+    });
+  });
+
   // Serve Frontend Static Files in Production if dist exists
   const distPath = path.resolve(process.cwd(), 'frontend', 'dist');
   if (fs.existsSync(distPath)) {
