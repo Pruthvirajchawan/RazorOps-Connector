@@ -1,4 +1,4 @@
-# MerchantOps Connector
+# RazorOps Connector
 > **Making merchant systems agent-ready.**  
 > A bounded, read-only operational gateway connecting autonomous AI agents with WooCommerce orders and inventory.
 
