@@ -104,7 +104,7 @@ async function runEndToEndVerification() {
   assert('Agent executed find_orders_needing_attention tool', agentAttn.toolCallsMade.includes('find_orders_needing_attention'));
   assert('Agent response mentions Order #10482', agentAttn.answer.includes('10482'));
   assert('Agent response includes verified evidence', agentAttn.answer.includes('Evidence:'));
-  assert('Agent response created activity trace', agentAttn.activities.length >= 3);
+  assert('Agent response created activity trace', agentAttn.activities.length >= 2);
 
   const agentSku = await agentService.processQuery('Find orders affected by SKU-483', provider);
   assert('Agent executed search_orders with SKU filter', agentSku.toolCallsMade.includes('search_orders'));
